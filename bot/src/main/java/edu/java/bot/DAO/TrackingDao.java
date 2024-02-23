@@ -6,7 +6,6 @@ import edu.java.bot.models.UserStatus;
 import java.util.List;
 
 public interface TrackingDao {
-    UserStatus getStatus(long id);
 
     UserModel getUser(long id);
 

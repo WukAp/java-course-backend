@@ -84,7 +84,7 @@ public class TelegramTrackingBot implements Bot {
     }
 
     private SetMyCommands getMyMenuCommands(Update update) {
-        UserStatus status = trackingDao.getStatus(update.message().from().id());
+        UserStatus status = trackingDao.getUserStatus(update.message().from().id());
         BotCommand[] availableCommands = commands.stream()
             .filter(command -> command.isAvailableToRun(status))
             .map(Command::toApiCommand).toArray(BotCommand[]::new);

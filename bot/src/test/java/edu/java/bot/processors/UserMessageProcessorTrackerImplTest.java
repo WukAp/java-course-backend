@@ -7,19 +7,18 @@ import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.DAO.TrackingDao;
 import edu.java.bot.commands.Command;
-import edu.java.bot.commands.HelpCommand;
 import edu.java.bot.commands.ListCommand;
 import edu.java.bot.commands.StartCommand;
 import edu.java.bot.commands.TrackCommand;
 import edu.java.bot.commands.UntrackCommand;
 import edu.java.bot.models.UserStatus;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.Optional;
+import static edu.java.bot.commands.UpdateMockBuilder.getUpdateMock;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserMessageProcessorTrackerImplTest {
@@ -30,6 +29,7 @@ class UserMessageProcessorTrackerImplTest {
     @BeforeAll
     static void setUp() {
         TrackingDao trackingDao = Mockito.mock(TrackingDao.class);
+        Mockito.when(trackingDao.getUserStatus(8L)).thenReturn(UserStatus.UNREGISTRED);
         processor = new UserMessageProcessorTrackerImpl(commandList, trackingDao);
     }
 
@@ -40,7 +40,7 @@ class UserMessageProcessorTrackerImplTest {
 
     @Test
     void process() {
-        Update update = getUpdateMock("/start");
+        Update update = getUpdateMock("/start", 8L, 5L);
         SendMessage sendMessage = processor.process(update);
         assertEquals(5L, sendMessage.getParameters().get("chat_id"));
         assertEquals(
@@ -50,21 +50,5 @@ class UserMessageProcessorTrackerImplTest {
         );
     }
 
-    private Update getUpdateMock(String text) {
 
-        User user = Mockito.mock(User.class);
-        Mockito.when(user.id()).thenReturn(8L);
-
-        Chat chat = Mockito.mock(Chat.class);
-        Mockito.when(chat.id()).thenReturn(5L);
-
-        Message message = Mockito.mock(Message.class);
-        Mockito.when(message.chat()).thenReturn(chat);
-        Mockito.when(message.from()).thenReturn(user);
-        Mockito.when(message.text()).thenReturn(text);
-
-        Update update = Mockito.mock(Update.class);
-        Mockito.when(update.message()).thenReturn(message);
-        return update;
-    }
 }

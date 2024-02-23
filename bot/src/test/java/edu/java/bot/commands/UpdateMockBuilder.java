@@ -20,8 +20,7 @@ public class UpdateMockBuilder {
         return update;
     }
 
-    public static Update getUpdateMock( String text) {
-
+    public static Update getUpdateMock(String text) {
         Message message = Mockito.mock(Message.class);
         Mockito.when(message.text()).thenReturn(text);
 
@@ -30,7 +29,7 @@ public class UpdateMockBuilder {
         return update;
     }
 
-    public static Update getUpdateMock( long userId, long chatId) {
+    public static Update getUpdateMock(long userId, long chatId) {
         User user = Mockito.mock(User.class);
         Mockito.when(user.id()).thenReturn(userId);
 
@@ -40,6 +39,24 @@ public class UpdateMockBuilder {
         Message message = Mockito.mock(Message.class);
         Mockito.when(message.chat()).thenReturn(chat);
         Mockito.when(message.from()).thenReturn(user);
+
+        Update update = Mockito.mock(Update.class);
+        Mockito.when(update.message()).thenReturn(message);
+        return update;
+    }
+
+    public static Update getUpdateMock(String text, long userId, long chatId) {
+
+        User user = Mockito.mock(User.class);
+        Mockito.when(user.id()).thenReturn(userId);
+
+        Chat chat = Mockito.mock(Chat.class);
+        Mockito.when(chat.id()).thenReturn(chatId);
+
+        Message message = Mockito.mock(Message.class);
+        Mockito.when(message.chat()).thenReturn(chat);
+        Mockito.when(message.from()).thenReturn(user);
+        Mockito.when(message.text()).thenReturn(text);
 
         Update update = Mockito.mock(Update.class);
         Mockito.when(update.message()).thenReturn(message);

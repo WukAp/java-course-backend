@@ -22,11 +22,6 @@ public class TrackingDAOInProgram implements TrackingDao {
         LOGGER.info("был добавлен user с id = " + id);
     }
 
-    @Override
-    public UserStatus getStatus(long id) {
-        UserModel userModel = getUser(id);
-        return (userModel == null) ? UserStatus.UNREGISTRED : userModel.getStatus();
-    }
 
     @Override
     public UserModel getUser(long id) {

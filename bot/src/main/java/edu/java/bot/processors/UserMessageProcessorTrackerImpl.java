@@ -32,7 +32,7 @@ public class UserMessageProcessorTrackerImpl implements UserMessageProcessor {
 
     @Override
     public SendMessage process(Update update) {
-        UserStatus status = trackingDao.getStatus(update.message().from().id());
+        UserStatus status = trackingDao.getUserStatus(update.message().from().id());
         for (Command command : commands) {
             if (command.supports(update, status)) {
                 return command.handle(update, status, trackingDao);
