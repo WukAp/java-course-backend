@@ -6,7 +6,6 @@ import edu.java.bot.DAO.TrackingDao;
 import edu.java.bot.models.LinkModel;
 import edu.java.bot.models.UserStatus;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Component;
 import static edu.java.bot.utils.ObjectBuildingUtils.sendMessageBuilder;
 
@@ -23,7 +22,7 @@ public class ListCommand implements Command {
     }
 
     @Override
-    public SendMessage handle(Update update, Optional<UserStatus> status, TrackingDao trackingDao) {
+    public SendMessage handle(Update update, UserStatus status, TrackingDao trackingDao) {
         List<LinkModel> links = trackingDao.getLinks(update.message().from().id());
         if (links.isEmpty()) {
             return sendMessageBuilder(update, "Вы пока не добавили ссылки для отслеживания.");

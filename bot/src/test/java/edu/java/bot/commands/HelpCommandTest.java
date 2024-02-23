@@ -12,6 +12,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
+
+import static edu.java.bot.commands.UpdateMockBuilder.getUpdateMock;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,55 +32,56 @@ class HelpCommandTest {
 
     @Test
     void handleWithEmptyHelpCommand() {
-        Chat chat = Mockito.mock(Chat.class);
-        Mockito.when(chat.id()).thenReturn(5L);
 
-        Message message = Mockito.mock(Message.class);
-        Mockito.when(message.chat()).thenReturn(chat);
-
-        Update update = Mockito.mock(Update.class);
-        Mockito.when(update.message()).thenReturn(message);
-
+        Update update = getUpdateMock(5L);
         TrackingDao trackingDao = Mockito.mock(TrackingDao.class);
-
-        SendMessage sendMessage = emptyHelpCommand.handle(update, Optional.empty(), trackingDao);
+        SendMessage sendMessage = emptyHelpCommand.handle(update, UserStatus.UNREGISTRED, trackingDao);
 
         assertEquals(5L, sendMessage.getParameters().get("chat_id"));
-        assertEquals("Доступные команды в данный момент:\n" +
-            "/help - вывести окно с доступными в даннный момент командами\n",
-            sendMessage.getParameters().get("text"));
+        assertEquals(
+            "Доступные команды в данный момент:\n" +
+                "/help - вывести окно с доступными в даннный момент командами\n",
+            sendMessage.getParameters().get("text")
+        );
     }
 
     @Test
     void handleWithNotEmptyHelpCommand() {
-        Chat chat = Mockito.mock(Chat.class);
-        Mockito.when(chat.id()).thenReturn(10L);
-
-        Message message = Mockito.mock(Message.class);
-        Mockito.when(message.chat()).thenReturn(chat);
-
-        Update update = Mockito.mock(Update.class);
-        Mockito.when(update.message()).thenReturn(message);
-
+        Update update = getUpdateMock(10L);
         TrackingDao trackingDao = Mockito.mock(TrackingDao.class);
-
         HelpCommand notEmptyHelpCommand =
             new HelpCommand(List.of(new StartCommand(), new TrackCommand()));
-
-        SendMessage sendMessage = notEmptyHelpCommand.handle(update, Optional.empty(), trackingDao);
+        SendMessage sendMessage = notEmptyHelpCommand.handle(update, UserStatus.UNREGISTRED, trackingDao);
 
         assertEquals(10L, sendMessage.getParameters().get("chat_id"));
-        assertEquals("Доступные команды в данный момент:\n" +
-            "/start - зарегистрировать пользователя\n" +
-            "/help - вывести окно с доступными в даннный момент командами\n",
-            sendMessage.getParameters().get("text"));
+        assertEquals(
+            "Доступные команды в данный момент:\n" +
+                "/start - зарегистрировать пользователя\n" +
+                "/help - вывести окно с доступными в даннный момент командами\n",
+            sendMessage.getParameters().get("text")
+        );
     }
 
     @Test
     void isAvailableToRun() {
-        assertTrue(emptyHelpCommand.isAvailableToRun(Optional.of(UserStatus.WAITING_FOR_COMMAND)));
-        assertTrue(emptyHelpCommand.isAvailableToRun(Optional.of(UserStatus.WAITING_FOR_TRACKING_LINK)));
-        assertTrue(emptyHelpCommand.isAvailableToRun(Optional.of(UserStatus.WAITING_FOR_UNTRACKING_LINK)));
-        assertTrue(emptyHelpCommand.isAvailableToRun(Optional.empty()));
+        assertTrue(emptyHelpCommand.isAvailableToRun(UserStatus.WAITING_FOR_COMMAND));
+        assertTrue(emptyHelpCommand.isAvailableToRun(UserStatus.WAITING_FOR_TRACKING_LINK));
+        assertTrue(emptyHelpCommand.isAvailableToRun(UserStatus.WAITING_FOR_UNTRACKING_LINK));
+        assertTrue(emptyHelpCommand.isAvailableToRun(UserStatus.UNREGISTRED));
+    }
+
+    @Test
+    void support() {
+        assertTrue(emptyHelpCommand.supports(getUpdateMock("/help"), UserStatus.UNREGISTRED));
+        assertTrue(emptyHelpCommand.supports(getUpdateMock("/help"), UserStatus.WAITING_FOR_UNTRACKING_LINK));
+        assertTrue(emptyHelpCommand.supports(getUpdateMock("/help"), UserStatus.WAITING_FOR_TRACKING_LINK));
+        assertTrue(emptyHelpCommand.supports(getUpdateMock("/help"), UserStatus.WAITING_FOR_COMMAND));
+        assertTrue(emptyHelpCommand.supports(getUpdateMock("/help test data"), UserStatus.WAITING_FOR_COMMAND));
+
+        assertFalse(emptyHelpCommand.supports(getUpdateMock("/start"), UserStatus.UNREGISTRED));
+        assertFalse(emptyHelpCommand.supports(getUpdateMock(
+                "https://stackoverflow.com/questions/9772618/writing-junit-tests"),
+            UserStatus.WAITING_FOR_UNTRACKING_LINK));
+        assertFalse(emptyHelpCommand.supports(getUpdateMock("test data"), UserStatus.WAITING_FOR_TRACKING_LINK));
     }
 }

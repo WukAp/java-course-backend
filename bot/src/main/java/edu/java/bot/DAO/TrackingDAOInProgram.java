@@ -3,10 +3,9 @@ package edu.java.bot.DAO;
 import edu.java.bot.models.LinkModel;
 import edu.java.bot.models.UserModel;
 import edu.java.bot.models.UserStatus;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -14,34 +13,29 @@ import org.springframework.stereotype.Component;
 @Component
 public class TrackingDAOInProgram implements TrackingDao {
 
-    public static final Logger LOGGER = LogManager.getLogger(TrackingDAOInProgram.class);
-    private final Set<UserModel> userDataSet = new HashSet<>();
+    private static final Logger LOGGER = LogManager.getLogger(TrackingDAOInProgram.class);
+    private final Map<Long, UserModel> userDataSet = new HashMap<>();
 
     @Override
     public void addUser(long id) {
-        userDataSet.add(new UserModel(id));
+        userDataSet.put(id, new UserModel(id));
         LOGGER.info("был добавлен user с id = " + id);
     }
 
     @Override
-    public Optional<UserStatus> getStatus(long id) {
+    public UserStatus getStatus(long id) {
         UserModel userModel = getUser(id);
-        return (userModel == null) ? Optional.empty() : Optional.of(userModel.getStatus());
+        return (userModel == null) ? UserStatus.UNREGISTRED : userModel.getStatus();
     }
 
     @Override
     public UserModel getUser(long id) {
-        for (UserModel userModel : userDataSet) {
-            if (userModel.getId() == id) {
-                return userModel;
-            }
-        }
-        return null;
+        return userDataSet.get(id);
     }
 
     @Override
     public void deleteUser(long id) {
-        userDataSet.remove(new UserModel(id));
+        userDataSet.remove(id);
         LOGGER.info("был удалён user с id = " + id);
     }
 
@@ -58,9 +52,15 @@ public class TrackingDAOInProgram implements TrackingDao {
     }
 
     @Override
-    public void getUserStatus(long id, UserStatus status) {
-        findUserByIdOrThrowException(id).getStatus();
-        LOGGER.info("был получен статус user'а с id = " + id);
+    public UserStatus getUserStatus(long id) {
+        UserStatus status;
+        if (userDataSet.containsKey(id)) {
+            status = userDataSet.get(id).getStatus();
+        } else {
+            status = UserStatus.UNREGISTRED;
+        }
+        LOGGER.info("У user'а с id = " + id + " был получен статус " + status);
+        return status;
     }
 
     @Override
@@ -77,10 +77,8 @@ public class TrackingDAOInProgram implements TrackingDao {
     }
 
     private UserModel findUserByIdOrThrowException(Long id) {
-        for (UserModel userModel : userDataSet) {
-            if (userModel.getId() == id) {
-                return userModel;
-            }
+        if (userDataSet.containsKey(id)) {
+            return userDataSet.get(id);
         }
         throw new UnknownUserException(id);
     }

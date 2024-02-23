@@ -4,10 +4,9 @@ import edu.java.bot.models.LinkModel;
 import edu.java.bot.models.UserModel;
 import edu.java.bot.models.UserStatus;
 import java.util.List;
-import java.util.Optional;
 
 public interface TrackingDao {
-    Optional<UserStatus> getStatus(long id);
+    UserStatus getStatus(long id);
 
     UserModel getUser(long id);
 
@@ -19,7 +18,7 @@ public interface TrackingDao {
 
     void removeLink(long id, LinkModel link);
 
-    void getUserStatus(long id, UserStatus status);
+    UserStatus getUserStatus(long id);
 
     void setUserStatus(long id, UserStatus status);
 

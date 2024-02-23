@@ -5,7 +5,6 @@ import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.DAO.TrackingDao;
 import edu.java.bot.models.UserStatus;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import static edu.java.bot.utils.ObjectBuildingUtils.sendMessageBuilder;
@@ -30,7 +29,7 @@ public class HelpCommand implements Command {
     }
 
     @Override
-    public SendMessage handle(Update update, Optional<UserStatus> status, TrackingDao trackingDao) {
+    public SendMessage handle(Update update, UserStatus status, TrackingDao trackingDao) {
 
         StringBuilder message = new StringBuilder("Доступные команды в данный момент:\n");
         commands.forEach(command -> {
@@ -43,7 +42,7 @@ public class HelpCommand implements Command {
     }
 
     @Override
-    public boolean isAvailableToRun(Optional<UserStatus> status) {
+    public boolean isAvailableToRun(UserStatus status) {
         return true;
     }
 

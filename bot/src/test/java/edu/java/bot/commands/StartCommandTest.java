@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.Optional;
+import static edu.java.bot.commands.UpdateMockBuilder.getUpdateMock;
 import static org.junit.jupiter.api.Assertions.*;
 
 class StartCommandTest {
@@ -31,22 +32,10 @@ class StartCommandTest {
 
     @Test
     void handle() {
-        User user = Mockito.mock(User.class);
-        Mockito.when(user.id()).thenReturn(8L);
 
-        Chat chat = Mockito.mock(Chat.class);
-        Mockito.when(chat.id()).thenReturn(5L);
-
-        Message message = Mockito.mock(Message.class);
-        Mockito.when(message.chat()).thenReturn(chat);
-        Mockito.when(message.from()).thenReturn(user);
-
-        Update update = Mockito.mock(Update.class);
-        Mockito.when(update.message()).thenReturn(message);
-
+        Update update = UpdateMockBuilder.getUpdateMock(8L, 5L);
         TrackingDao trackingDao = Mockito.mock(TrackingDao.class);
-
-        SendMessage sendMessage = startCommand.handle(update, Optional.empty(), trackingDao);
+        SendMessage sendMessage = startCommand.handle(update, UserStatus.WAITING_FOR_COMMAND, trackingDao);
 
         assertEquals(5L, sendMessage.getParameters().get("chat_id"));
         assertEquals(
@@ -58,9 +47,23 @@ class StartCommandTest {
 
     @Test
     void isAvailableToRun() {
-        assertFalse(startCommand.isAvailableToRun(Optional.of(UserStatus.WAITING_FOR_COMMAND)));
-        assertFalse(startCommand.isAvailableToRun(Optional.of(UserStatus.WAITING_FOR_TRACKING_LINK)));
-        assertFalse(startCommand.isAvailableToRun(Optional.of(UserStatus.WAITING_FOR_UNTRACKING_LINK)));
-        assertTrue(startCommand.isAvailableToRun(Optional.empty()));
+        assertFalse(startCommand.isAvailableToRun( UserStatus.WAITING_FOR_COMMAND));
+        assertFalse(startCommand.isAvailableToRun( UserStatus.WAITING_FOR_TRACKING_LINK));
+        assertFalse(startCommand.isAvailableToRun( UserStatus.WAITING_FOR_UNTRACKING_LINK));
+        assertTrue(startCommand.isAvailableToRun(UserStatus.UNREGISTRED));
+    }
+    @Test
+    void support() {
+        assertTrue(startCommand.supports(getUpdateMock("/start"), UserStatus.UNREGISTRED));
+        assertTrue(startCommand.supports(getUpdateMock("/start test data"), UserStatus.UNREGISTRED));
+        assertFalse(startCommand.supports(getUpdateMock("/start"), UserStatus.WAITING_FOR_COMMAND));
+        assertFalse(startCommand.supports(getUpdateMock("/start"), UserStatus.WAITING_FOR_UNTRACKING_LINK));
+        assertFalse(startCommand.supports(getUpdateMock("/start"), UserStatus.WAITING_FOR_TRACKING_LINK));
+
+        assertFalse(startCommand.supports(getUpdateMock("/help"), UserStatus.UNREGISTRED));
+        assertFalse(startCommand.supports(getUpdateMock(
+                "https://stackoverflow.com/questions/9772618/writing-junit-tests"),
+            UserStatus.UNREGISTRED));
+        assertFalse(startCommand.supports(getUpdateMock("test data"), UserStatus.UNREGISTRED));
     }
 }

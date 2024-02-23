@@ -75,6 +75,7 @@ class UserModelTest {
 
     @Test
     void testEquals() {
+        assertEquals(userModelForEach, userModelForEach);
         assertEquals(simpleUserModel0, userModelForEach);
 
         userModelForEach.addNewLink(linkModel0);
@@ -83,6 +84,7 @@ class UserModelTest {
         assertEquals(simpleUserModel0, userModelForEach);
 
         assertNotEquals(simpleUserModel0, simpleUserModel1);
+        assertNotEquals(simpleUserModel0, 0);
     }
 
     @Test

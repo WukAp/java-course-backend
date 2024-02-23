@@ -4,19 +4,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import lombok.Getter;
+import lombok.Setter;
 
 public class UserModel {
 
+    @Getter
     private final long id;
     private final Set<LinkModel> linksList = new HashSet<>();
+    @Setter @Getter
     private UserStatus status = UserStatus.WAITING_FOR_COMMAND;
 
     public UserModel(long userId) {
         this.id = userId;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public List<LinkModel> getLinksList() {
@@ -31,7 +31,8 @@ public class UserModel {
         linksList.remove(link);
     }
 
-    @Override public boolean equals(Object object) {
+    @Override
+    public boolean equals(Object object) {
         if (this == object) {
             return true;
         }
@@ -46,13 +47,4 @@ public class UserModel {
     public int hashCode() {
         return Objects.hash(id);
     }
-
-    public UserStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(UserStatus status) {
-        this.status = status;
-    }
-
 }
