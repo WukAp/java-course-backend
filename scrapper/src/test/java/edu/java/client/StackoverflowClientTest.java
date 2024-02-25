@@ -15,11 +15,11 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static org.junit.jupiter.api.Assertions.*;
-@WireMockTest
+
 class StackoverflowClientTest {
 
     private static final StackoverflowClient client = new StackoverflowClient();
-    private static WireMockServer wireMockServer;
+//    private static WireMockServer wireMockServer;
 
 //    @BeforeEach
 //    void startWireMock() {
@@ -76,8 +76,8 @@ class StackoverflowClientTest {
         );
     }
 
-    @AfterEach
-    void stopWireMock() {
-        wireMockServer.stop();
-    }
+//    @AfterEach
+//    void stopWireMock() {
+//        wireMockServer.stop();
+//    }
 }
