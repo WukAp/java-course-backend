@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.models.RelativeLinkModel;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,6 +38,7 @@ class GithubClientTest {
 
     @Test
     void getLastModifier() {
+       // System.out.println(wireMockServer.baseUrl());
         Client client1 = new GithubClient(wireMockServer.baseUrl());
         RelativeLinkModel model = client1.createLinkModel(
             "https://github.com/WukAp/telegram-bot");
@@ -65,5 +67,10 @@ class GithubClientTest {
             () -> client.createLinkModel("https://stackoverflow.com/54722250")
         );
         assertThrows(IllegalArgumentException.class, () -> client.createLinkModel("https://github.com/pengrad/"));
+    }
+
+    @AfterEach
+    void stopWireMock() {
+        wireMockServer.stop();
     }
 }
