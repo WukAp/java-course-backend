@@ -38,6 +38,7 @@ public class StackoverflowClient extends Client {
             throw new IllegalArgumentException("Unsupported format for stackoverflow repository link");
         }
     }
+
     @Override
     public Mono<OffsetDateTime> getLastModifier(RelativeLinkModel linkModel) {
         return webClient.get()
@@ -50,7 +51,6 @@ public class StackoverflowClient extends Client {
             .map(questionResponse ->
                 questionResponse.items.getFirst().time());
     }
-
 
     public record QuestionResponse(List<ItemResponse> items) {
         record ItemResponse(@JsonProperty("last_activity_date") OffsetDateTime time) {
