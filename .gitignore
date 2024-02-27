@@ -30,3 +30,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### secret environment variables ###
+/bot/src/main/resources/telegram.env
