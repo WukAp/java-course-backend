@@ -1,7 +1,5 @@
 package edu.java.bot.commands;
 
-import com.pengrad.telegrambot.model.Chat;
-import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.DAO.TrackingDao;
@@ -11,7 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
-import java.util.Optional;
 
 import static edu.java.bot.commands.UpdateMockBuilder.getUpdateMock;
 import static org.junit.jupiter.api.Assertions.*;
