@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 @EnableConfigurationProperties({ApplicationConfig.class, ClientConfig.class})
-public class ScrapperApplication {
+public class  ScrapperApplication {
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(ScrapperApplication.class, args);
 //        GithubClient client = context.getBean(GithubClient.class);
