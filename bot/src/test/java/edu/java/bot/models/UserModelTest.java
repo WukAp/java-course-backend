@@ -3,6 +3,8 @@ package edu.java.bot.models;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.net.URISyntaxException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserModelTest {
@@ -13,6 +15,9 @@ class UserModelTest {
     private final LinkModel linkModel0 = new LinkModel("test0");
     private final LinkModel linkModel1 = new LinkModel("test1");
     private final LinkModel linkModel2 = new LinkModel("test3");
+
+    UserModelTest() throws URISyntaxException {
+    }
 
     @BeforeEach
     void setUp() {

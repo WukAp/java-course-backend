@@ -31,7 +31,6 @@ class BotClientTest {
     @SneakyThrows
     @Test
     public void putUpdate() {
-        System.out.println(wireMockServer.baseUrl());
         BotClient client = new BotClient(wireMockServer.baseUrl());
        Assertions.assertEquals("link has been updated!",
            client.putUpdate(new LinkUpdateRequest(new URI("link"), "description!", 1)).block());
