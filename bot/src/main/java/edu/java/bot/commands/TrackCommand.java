@@ -5,7 +5,6 @@ import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.DAO.TrackingDao;
 import edu.java.bot.models.LinkModel;
 import edu.java.bot.models.UserStatus;
-import java.net.URISyntaxException;
 import org.springframework.stereotype.Component;
 import static edu.java.bot.utils.ObjectBuildingUtils.sendMessageBuilder;
 
@@ -24,13 +23,10 @@ public class TrackCommand implements Command {
     @Override
     public SendMessage handle(Update update, UserStatus status, TrackingDao trackingDao) {
         if (status.equals(UserStatus.WAITING_FOR_TRACKING_LINK)) {
-            try {
-                trackingDao.addLink(update.message().from().id(), new LinkModel(update.message().text()));
-                trackingDao.setUserStatus(update.message().from().id(), UserStatus.WAITING_FOR_COMMAND);
-                return sendMessageBuilder(update, "Ссылка добавлена для отслеживания!");
-            } catch (URISyntaxException e) {
-                return sendMessageBuilder(update, "Недопустимый формат ссылки!");
-            }
+            trackingDao.addLink(update.message().from().id(), new LinkModel(update.message().text()));
+            trackingDao.setUserStatus(update.message().from().id(), UserStatus.WAITING_FOR_COMMAND);
+            return sendMessageBuilder(update, "Ссылка добавлена для отслеживания!");
+
         } else {
             trackingDao.setUserStatus(update.message().from().id(), UserStatus.WAITING_FOR_TRACKING_LINK);
             return sendMessageBuilder(update, "Введите ссылку, которую хотите отслеживать:");

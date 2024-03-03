@@ -6,9 +6,10 @@ import edu.java.bot.DAO.TrackingDao;
 import edu.java.bot.models.UserStatus;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
 import static edu.java.bot.commands.UpdateMockBuilder.getUpdateMock;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UntrackCommandTest {
 
@@ -49,11 +50,12 @@ class UntrackCommandTest {
 
     @Test
     void isAvailableToRun() {
-        assertTrue(untrackCommand.isAvailableToRun( UserStatus.WAITING_FOR_COMMAND));
-        assertFalse(untrackCommand.isAvailableToRun( UserStatus.WAITING_FOR_TRACKING_LINK));
-        assertFalse(untrackCommand.isAvailableToRun( UserStatus.WAITING_FOR_UNTRACKING_LINK));
+        assertTrue(untrackCommand.isAvailableToRun(UserStatus.WAITING_FOR_COMMAND));
+        assertFalse(untrackCommand.isAvailableToRun(UserStatus.WAITING_FOR_TRACKING_LINK));
+        assertFalse(untrackCommand.isAvailableToRun(UserStatus.WAITING_FOR_UNTRACKING_LINK));
         assertFalse(untrackCommand.isAvailableToRun(UserStatus.UNREGISTRED));
     }
+
     @Test
     void support() {
         assertTrue(untrackCommand.supports(getUpdateMock("/untrack"), UserStatus.WAITING_FOR_COMMAND));

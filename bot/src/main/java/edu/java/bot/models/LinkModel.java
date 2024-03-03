@@ -1,19 +1,13 @@
 package edu.java.bot.models;
 
 import edu.java.DTO.LinkUpdateRequest;
-import java.net.URI;
-import java.net.URISyntaxException;
 
-public record LinkModel(URI link) {
+public record LinkModel(String link) {
     public LinkModel(LinkUpdateRequest link) {
-        this(link.url());
-    }
-
-    public LinkModel(String link) throws URISyntaxException {
-        this(new URI(link));
+        this(link.url().toString());
     }
 
     @Override public String toString() {
-        return link.toString();
+        return link;
     }
 }
