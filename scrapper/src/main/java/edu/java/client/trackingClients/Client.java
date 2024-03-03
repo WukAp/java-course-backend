@@ -1,4 +1,4 @@
-package edu.java.client;
+package edu.java.client.trackingClients;
 
 import edu.java.models.RelativeLinkModel;
 import java.time.OffsetDateTime;

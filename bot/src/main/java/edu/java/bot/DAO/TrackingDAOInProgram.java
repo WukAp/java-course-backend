@@ -14,23 +14,23 @@ import org.springframework.stereotype.Component;
 public class TrackingDAOInProgram implements TrackingDao {
 
     private static final Logger LOGGER = LogManager.getLogger(TrackingDAOInProgram.class);
-    private final Map<Long, UserModel> userDataSet = new HashMap<>();
+    private final Map<Long, UserModel> data = new HashMap<>();
 
     @Override
     public void addUser(long id) {
-        userDataSet.put(id, new UserModel(id));
+        data.put(id, new UserModel(id));
         LOGGER.info("был добавлен user с id = " + id);
     }
 
 
     @Override
     public UserModel getUser(long id) {
-        return userDataSet.get(id);
+        return data.get(id);
     }
 
     @Override
     public void deleteUser(long id) {
-        userDataSet.remove(id);
+        data.remove(id);
         LOGGER.info("был удалён user с id = " + id);
     }
 
@@ -49,8 +49,8 @@ public class TrackingDAOInProgram implements TrackingDao {
     @Override
     public UserStatus getUserStatus(long id) {
         UserStatus status;
-        if (userDataSet.containsKey(id)) {
-            status = userDataSet.get(id).getStatus();
+        if (data.containsKey(id)) {
+            status = data.get(id).getStatus();
         } else {
             status = UserStatus.UNREGISTRED;
         }
@@ -72,8 +72,8 @@ public class TrackingDAOInProgram implements TrackingDao {
     }
 
     private UserModel findUserByIdOrThrowException(Long id) {
-        if (userDataSet.containsKey(id)) {
-            return userDataSet.get(id);
+        if (data.containsKey(id)) {
+            return data.get(id);
         }
         throw new UnknownUserException(id);
     }
