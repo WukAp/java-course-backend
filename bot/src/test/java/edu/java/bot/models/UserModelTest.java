@@ -3,6 +3,8 @@ package edu.java.bot.models;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.net.URISyntaxException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserModelTest {
@@ -46,7 +48,7 @@ class UserModelTest {
         assertEquals(0, userModelForEach.getLinksList().size());
         userModelForEach.addNewLink(linkModel0);
         userModelForEach.addNewLink(linkModel1);
-        assertArrayEquals(new Object[]{linkModel0, linkModel1}, userModelForEach.getLinksList().toArray());
+        assertArrayEquals(new Object[] {linkModel0, linkModel1}, userModelForEach.getLinksList().toArray());
     }
 
     @Test

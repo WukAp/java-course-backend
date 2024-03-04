@@ -1,4 +1,4 @@
-package edu.java.client;
+package edu.java.client.trackingClients;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.java.models.RelativeLinkModel;
@@ -35,7 +35,7 @@ public class StackoverflowClient extends Client {
         if (m.find()) {
             return new RelativeLinkModel(m.group(1));
         } else {
-            throw new IllegalArgumentException("Unsupported format for stackoverflow repository link");
+            throw new IllegalArgumentException("Unsupported format for stackoverflow repository url");
         }
     }
 

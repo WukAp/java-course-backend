@@ -26,6 +26,7 @@ public class UntrackCommand implements Command {
             trackingDao.removeLink(update.message().from().id(), new LinkModel(update.message().text()));
             trackingDao.setUserStatus(update.message().from().id(), UserStatus.WAITING_FOR_COMMAND);
             return sendMessageBuilder(update, "Отслеживание ссылки прекращено!");
+
         } else {
             trackingDao.setUserStatus(update.message().from().id(), UserStatus.WAITING_FOR_UNTRACKING_LINK);
             return sendMessageBuilder(update, "Введите ссылку, которую хотите прекратить отслеживать:");

@@ -4,14 +4,15 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.DAO.TrackingDao;
 import edu.java.bot.models.UserStatus;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.util.List;
-
 import static edu.java.bot.commands.UpdateMockBuilder.getUpdateMock;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
 class HelpCommandTest {
@@ -76,9 +77,11 @@ class HelpCommandTest {
         assertTrue(emptyHelpCommand.supports(getUpdateMock("/help test data"), UserStatus.WAITING_FOR_COMMAND));
 
         assertFalse(emptyHelpCommand.supports(getUpdateMock("/start"), UserStatus.UNREGISTRED));
-        assertFalse(emptyHelpCommand.supports(getUpdateMock(
+        assertFalse(emptyHelpCommand.supports(
+            getUpdateMock(
                 "https://stackoverflow.com/questions/9772618/writing-junit-tests"),
-            UserStatus.WAITING_FOR_UNTRACKING_LINK));
+            UserStatus.WAITING_FOR_UNTRACKING_LINK
+        ));
         assertFalse(emptyHelpCommand.supports(getUpdateMock("test data"), UserStatus.WAITING_FOR_TRACKING_LINK));
     }
 }

@@ -16,3 +16,7 @@ server:
 
 logging:
   config: classpath:log4j2-plain.xml
+springdoc:
+  api-docs:
+    enabled: true
+    path: "/api-docs"

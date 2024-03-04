@@ -26,6 +26,7 @@ public class TrackCommand implements Command {
             trackingDao.addLink(update.message().from().id(), new LinkModel(update.message().text()));
             trackingDao.setUserStatus(update.message().from().id(), UserStatus.WAITING_FOR_COMMAND);
             return sendMessageBuilder(update, "Ссылка добавлена для отслеживания!");
+
         } else {
             trackingDao.setUserStatus(update.message().from().id(), UserStatus.WAITING_FOR_TRACKING_LINK);
             return sendMessageBuilder(update, "Введите ссылку, которую хотите отслеживать:");
@@ -34,7 +35,7 @@ public class TrackCommand implements Command {
 
     @Override
     public boolean supports(Update update, UserStatus status) {
-        return  (status.equals(UserStatus.WAITING_FOR_COMMAND)
+        return (status.equals(UserStatus.WAITING_FOR_COMMAND)
             && update.message().text().toLowerCase().trim().startsWith(command())
             || status.equals(UserStatus.WAITING_FOR_TRACKING_LINK));
     }
