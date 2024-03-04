@@ -37,9 +37,8 @@ public class LinksController {
         }
          */
         trackingDao.addLink(linkRequest.tgChatId(), linkRequest.url());
-        String message = linkRequest.url() + " has been added!";
-        LOGGER.info(message);
-        return new ResponseEntity<>(message, HttpStatus.OK);
+        LOGGER.info("{}. has been added!", linkRequest);
+        return new ResponseEntity<>(linkRequest.url() + " has been added!", HttpStatus.OK);
     }
 
     @GetMapping("/{chatId}")
@@ -52,8 +51,7 @@ public class LinksController {
     @DeleteMapping("/{id}/")
     public ResponseEntity<String> deleteLink(@PathVariable int id, @RequestParam String url) {
         trackingDao.deleteLink(id, url);
-        String message = url + " has been deleted!";
-        LOGGER.info(message);
-        return new ResponseEntity<>(message, HttpStatus.OK);
+        LOGGER.info("{}. has been deleted for chatId = {}.!", url, id);
+        return new ResponseEntity<>(url + " has been deleted!", HttpStatus.OK);
     }
 }

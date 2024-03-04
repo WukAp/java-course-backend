@@ -27,17 +27,15 @@ public class TgChatController {
     @PostMapping("/{id}")
     public ResponseEntity<String> addChat(@PathVariable int id) {
         trackingDao.addChat(id);
-        String message = getMessage(id, " has been added!");
-        LOGGER.info(message);
-        return new ResponseEntity<>(message, HttpStatus.OK);
+        LOGGER.info("{}. has been added!", id);
+        return new ResponseEntity<>(getMessage(id, " has been added!"), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteChat(@PathVariable int id) {
         trackingDao.deleteChat(id);
-        String message = getMessage(id, " has been deleted!");
-        LOGGER.info(message);
-        return new ResponseEntity<>(message, HttpStatus.OK);
+        LOGGER.info("{}. has been deleted!", id);
+        return new ResponseEntity<>(getMessage(id, " has been deleted!"), HttpStatus.OK);
     }
 
     private String getMessage(int id, String endOfMessage) {

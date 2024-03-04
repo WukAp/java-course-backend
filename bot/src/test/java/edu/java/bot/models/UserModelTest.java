@@ -16,9 +16,6 @@ class UserModelTest {
     private final LinkModel linkModel1 = new LinkModel("test1");
     private final LinkModel linkModel2 = new LinkModel("test3");
 
-    UserModelTest() throws URISyntaxException {
-    }
-
     @BeforeEach
     void setUp() {
         userModelForEach = new UserModel(0);
@@ -51,7 +48,7 @@ class UserModelTest {
         assertEquals(0, userModelForEach.getLinksList().size());
         userModelForEach.addNewLink(linkModel0);
         userModelForEach.addNewLink(linkModel1);
-        assertArrayEquals(new Object[]{linkModel0, linkModel1}, userModelForEach.getLinksList().toArray());
+        assertArrayEquals(new Object[] {linkModel0, linkModel1}, userModelForEach.getLinksList().toArray());
     }
 
     @Test

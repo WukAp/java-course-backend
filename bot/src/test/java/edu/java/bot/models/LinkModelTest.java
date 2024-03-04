@@ -9,9 +9,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class LinkModelTest {
     private final LinkModel linkModel = new LinkModel("testLink");
 
-    LinkModelTest() throws URISyntaxException {
-    }
-
     @Test
     void testToString() {
         assertEquals("testLink", linkModel.toString());

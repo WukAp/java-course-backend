@@ -61,11 +61,11 @@ public class TelegramTrackingBot implements Bot {
         bot.setUpdatesListener(updates -> {
             for (Update update : updates) {
                 LOGGER.info(
-                    "Сообщение принято от " + update.message().from().username() + ": " + update.message().text());
+                    "Сообщение принято от {}.: {}.", update.message().from().username(), update.message().text());
                 SendMessage message = processor.process(update);
                 bot.execute(getMyMenuCommands(update));
                 var messageText = bot.execute(message).message().text();
-                LOGGER.info("Отправлен ответ: " + messageText);
+                LOGGER.info("Отправлен ответ: {}.", messageText);
             }
             return UpdatesListener.CONFIRMED_UPDATES_ALL;
         }, e -> {
