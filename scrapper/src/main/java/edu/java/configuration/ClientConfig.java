@@ -12,19 +12,19 @@ public record ClientConfig(String githubBaseUrl, String stackoverflowBaseUrl) {
 
     @Bean
     public GithubClient githubWebClient() {
-        if (githubBaseUrl != null) {
-            return new GithubClient(githubBaseUrl);
-        } else {
+        if (githubBaseUrl == null) {
             return new GithubClient();
+        } else {
+            return new GithubClient(githubBaseUrl);
         }
     }
 
     @Bean
     public StackoverflowClient stackoverflowWebClient() {
-        if (stackoverflowBaseUrl != null) {
-            return new StackoverflowClient(stackoverflowBaseUrl);
-        } else {
+        if (stackoverflowBaseUrl == null) {
             return new StackoverflowClient();
+        } else {
+            return new StackoverflowClient(stackoverflowBaseUrl);
         }
     }
 }
