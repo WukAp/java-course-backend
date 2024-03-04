@@ -8,6 +8,7 @@ import edu.java.client.trackingClients.Client;
 import edu.java.client.trackingClients.GithubClient;
 import edu.java.models.RelativeLinkModel;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
